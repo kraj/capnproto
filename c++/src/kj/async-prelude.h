@@ -27,6 +27,17 @@
 #include "exception.h"
 #include "tuple.h"
 
+#ifdef __has_include
+#if __has_include(<experimental/coroutine>)
+#include <experimental/coroutine>
+// TODO(someday): __cpp_coroutines is the Coroutines TS feature test macro. The standardized version
+//   will be __cpp_lib_coroutine.
+#ifdef __cpp_coroutines
+#define KJ_HAVE_COROUTINE 1
+#endif
+#endif
+#endif
+
 KJ_BEGIN_HEADER
 
 namespace kj {

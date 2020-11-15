@@ -270,5 +270,18 @@ if(BUILD_TESTING)
     endif()
     add_dependencies(check kj-heavy-tests)
     add_test(NAME kj-heavy-tests-run COMMAND kj-heavy-tests)
+
+    if(cxx_std_20 IN_LIST CMAKE_CXX_COMPILE_FEATURES)
+      message(STATUS "This compiler supports C++20, so we'll test C++20-dependent features.")
+      # Our compiler supports C++20, yay.
+      add_executable(kj-cxx20-tests
+        async-coroutine-test.c++
+      )
+      target_link_libraries(kj-cxx20-tests kj-http kj-test)
+      add_dependencies(check kj-cxx20-tests)
+      add_test(NAME kj-cxx20-tests-run COMMAND kj-cxx20-tests)
+    else()
+      message(STATUS "This compiler does not support C++20, not testing C++20-dependent features.")
+    endif()
   endif()  # NOT CAPNP_LITE
 endif()  # BUILD_TESTING
